@@ -1,8 +1,10 @@
-// 제주 가이드 글. 새 글은 이 목록 맨 앞에 추가하면 됩니다. (slug는 영문·숫자·-)
+// 여행 가이드 글. 새 글은 이 목록 맨 앞에 추가하면 됩니다. (slug는 영문·숫자·-, region은 regions.js의 시·도 이름: 제주/경기/강원…, 비우면 전체 공통)
 window.GUIDE = [
   {
     slug: 'jeju-month-packing',
+    region: '제주',
     tag: '한달살이',
+    photo: 'https://lh3.googleusercontent.com/d/1RCf4M6zJ_XokArl2neduKLoaAXm4g3zC=w1600',
     title: '제주 한달살이, 짐 싸기 체크리스트',
     summary: '한 달을 머물 때 꼭 챙길 것과 두고 와도 되는 것',
     color: 'linear-gradient(135deg,#bae6fd,#0369a1)',
@@ -20,7 +22,9 @@ window.GUIDE = [
   },
   {
     slug: 'why-managed-stay',
+    region: '',
     tag: '클리더 이야기',
+    photo: 'https://lh3.googleusercontent.com/d/1y_j9VlWbc8A_vL4FF1-iJ7R77rc1ws3R=w1600',
     title: '관리가 다른 숙소는 무엇이 다를까',
     summary: '매번 사진으로 확인하는 청소, 숙소 주인이 직접 보는 예약·정산',
     color: 'linear-gradient(135deg,#fde68a,#d97706)',
