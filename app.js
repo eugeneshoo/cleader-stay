@@ -307,10 +307,24 @@
       ev.preventDefault(); var msg = $('#c-msg'), btn = $('#c-send');
       if (!$('#c-ok').checked) { msg.className = 'msg bad'; msg.textContent = '개인정보 수집·이용에 동의해 주세요.'; return; }
       btn.disabled = true; msg.className = 'msg'; msg.textContent = '보내는 중…';
-      post({ fn: 'care', service: $('#c-svc').value, place: $('#c-place').value, address: $('#c-addr').value, name: $('#c-name').value, phone: $('#c-phone').value, email: $('#c-email').value, memo: $('#c-memo').value, consent: true, website: $('#c-web').value })
+      // 늘어난 항목은 서버를 바꾸지 않고 메모 앞에 줄로 붙여 보냄(영업 문의 메모에 그대로 보임)
+      var v = function (id) { var e = $(id); return e ? String(e.value || '').trim() : ''; };
+      var ch = [].slice.call(document.querySelectorAll('input[name="c-ch"]:checked')).map(function (x) { return x.value; }).join(', ');
+      var info = [['숙소 형태', v('#c-type')], ['객실 수', v('#c-rooms')], ['지금 상황', v('#c-now')], ['희망 시작', v('#c-when')], ['예약 채널', ch], ['연락 편한 시간', v('#c-time')]]
+        .filter(function (x) { return x[1]; }).map(function (x) { return x[0] + ': ' + x[1]; }).join(' / ');
+      var memo = [info, v('#c-memo')].filter(Boolean).join('\n');
+      post({ fn: 'care', service: $('#c-svc').value, place: $('#c-place').value, address: $('#c-addr').value, name: $('#c-name').value, phone: $('#c-phone').value, email: $('#c-email').value, memo: memo, consent: true, website: $('#c-web').value })
         .then(function (j) { msg.className = 'msg ok'; msg.textContent = j.message; $('#careForm').reset(); }, function (e) { msg.className = 'msg bad'; msg.textContent = e.message; })
         .then(function () { btn.disabled = false; });
     };
+    // 숫자 지표: 공개 자료에 stats가 있을 때만 보임(장부 자동 계산)
+    var SHOW_STATS = /[?&]stats=1/.test(location.search); // 대표님 확인 전까지 숨김(주소 끝에 ?stats=1 붙이면 미리보기)
+    if (SHOW_STATS) pub().then(function (p) {
+      var s = p.stats; if (!s || !s.homes) return;
+      $('#st-homes').textContent = s.homes + '곳'; $('#st-rate').textContent = s.rate + '%'; $('#st-nights').textContent = Number(s.nights).toLocaleString('ko-KR') + '박';
+      $('#st-foot').textContent = '위탁운영 장부 기준 · 최근 ' + (s.days || 90) + '일 (' + (s.base || '') + ' 집계, 매일 자동 갱신) · 예약률은 숙소별 예약된 밤 ÷ 기간';
+      $('#stats').hidden = false;
+    }, function () {});
   }
   // ---------- 여행 가이드 ----------
   function guide() {

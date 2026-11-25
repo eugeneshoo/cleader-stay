@@ -224,3 +224,27 @@ body[data-page=room] .call{display:none}
 }
 body.over:not(.scrolled) .call{display:none}
 .hero.short .wrap{padding-top:130px;padding-bottom:64px}
+/* 숙소 맡기기: 숫자 지표 · 맡는 일 표 · 상담 폼 (11-26) */
+.stats{background:var(--dark);color:#fff;padding:44px 0 34px}
+.stats .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stats .nums div{border-left:1px solid rgba(255,255,255,.18);padding-left:18px}
+.stats b{display:block;font-family:var(--serif);font-size:38px;font-weight:600;line-height:1.15;color:#fff}
+.stats span{font-size:13px;color:rgba(255,255,255,.7)}
+.stats .foot{font-size:11px;color:rgba(255,255,255,.45);margin:22px 0 0}
+@media (max-width:760px){.stats .nums{grid-template-columns:1fr 1fr;row-gap:24px}.stats b{font-size:30px}}
+.matrix{margin-top:56px}
+.matrix h3{font-family:var(--serif);font-size:22px;margin:0 0 14px}
+.mx-scroll{overflow-x:auto}
+.matrix table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;min-width:440px}
+.matrix th,.matrix td{border-bottom:1px solid var(--line);padding:12px 14px;text-align:center}
+.matrix th{font-size:12px;letter-spacing:1px;color:var(--sub);font-weight:600;border-bottom:1px solid var(--ink)}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.matrix td{color:var(--gold);font-size:15px}.matrix td:first-child{color:var(--ink);font-size:14px}
+.matrix small{display:block;font-size:11px;color:var(--sub)}
+.form fieldset.checks{border:0;padding:0;margin:12px 0 0}
+.form .checks legend{font-size:12px;letter-spacing:.5px;color:var(--sub);font-weight:600;padding:0}
+.form .checks label{display:inline-flex;align-items:center;gap:6px;margin:6px 6px 0 0;padding:7px 12px;border:1px solid #dcd8d0;border-radius:999px;font-size:13px;font-weight:400;letter-spacing:0;color:var(--ink);background:#fff;cursor:pointer}
+.form .checks input{width:auto;margin:0;display:inline}
+.form .sendrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.form .sendrow span{font-size:13px;color:var(--sub)}
+@media (max-width:640px){.form .two{grid-template-columns:1fr;gap:0}}
