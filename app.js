@@ -221,6 +221,8 @@
       var g = regionOf(r.area);
       $('#crumb').innerHTML = '<a href="./">CLEADER STAY</a> / <a href="./?area=' + encodeURIComponent('p:' + g.prov) + '#all">' + esc(g.prov) + '</a> / ' + esc(r.name);
       $('#r-area').textContent = areaLabel(r);
+      // 클리더가 청소하지 않는 지역(regions.js CLEAN에 없는 시·도)은 청소 안내 대신 운영 안내
+      var care = $('.care'); if (care && (RG.CLEAN || ['제주']).indexOf(g.prov) < 0) care.innerHTML = '<div><b>클리더가 운영하는 숙소</b><p>예약 확인과 입실 안내를 클리더가 맡습니다.</p></div><div><b>빈 날짜 바로 확인</b><p>운영 장부와 이어진 달력이라 보이는 빈 날이 실제 빈 날입니다.</p></div><div><b>대표번호 응대</b><p>머무는 동안 불편한 점은 ' + TEL + '로 알려 주세요.</p></div>';
       var gal = $('#gal'), ph = r.photos || [];
       if (ph.length) {
         ph.slice(0, 5).forEach(function (u, i) { var d = E('div'); d.style.backgroundImage = 'url("' + sized(u, i ? 900 : 1600) + '")'; d.onclick = function () { lightbox(ph, i); }; gal.append(d); });
