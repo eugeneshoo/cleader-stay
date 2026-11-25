@@ -78,8 +78,44 @@
     if (page !== 'room') { var call = E('a', 'call', '☎ 전화 문의'); call.href = 'tel:' + TEL; document.body.append(call); }
   }
   // ---------- 숙소 카드 ----------
+  // 빠른 길: 스크립트가 2분마다 써 두는 공개 시트(숙소 + 400일 예약된 밤)를 바로 읽음. 못 읽으면 스크립트 주소로.
+  var PUB_SHEET = '1AMyKOKDaZ1FtKWNQ-BESY2Vq173OjdJdvAT_-CEH-Nc';
+  var PUBP = null;
+  function pub() {
+    if (PUBP) return PUBP;
+    PUBP = new Promise(function (res, rej) {
+      if (!PUB_SHEET) { rej(new Error('no sheet')); return; }
+      var cb = '__hp' + Date.now(), s = document.createElement('script'), done = false;
+      var t = setTimeout(function () { fin(new Error('timeout')); }, 5000);
+      function fin(err, val) { if (done) return; done = true; clearTimeout(t); try { delete window[cb]; } catch (e) { window[cb] = undefined; } s.remove(); if (err) rej(err); else res(val); }
+      window[cb] = function (r) {
+        try {
+          if (!r || r.status === 'error') throw new Error('sheet error');
+          var txt = (r.table.rows || []).map(function (x) { return x.c && x.c[0] && x.c[0].v || ''; }).join('');
+          var p = JSON.parse(txt); if (!p || !p.rooms || !p.busy) throw new Error('bad pack'); fin(null, p);
+        } catch (e) { fin(e); }
+      };
+      s.onerror = function () { fin(new Error('load')); };
+      s.src = 'https://docs.google.com/spreadsheets/d/' + PUB_SHEET + '/gviz/tq?headers=0&tq=' + encodeURIComponent('select A') + '&tqx=responseHandler:' + cb + '&_=' + Math.floor(Date.now() / 60000);
+      document.head.append(s);
+    });
+    PUBP.catch(function () {});
+    return PUBP;
+  }
+  // 빈 날짜: 공개 시트에서 기간만 잘라 씀 → 못 하면 스크립트에 물어봄
+  function avail(room, from, to) {
+    return pub().then(function (p) {
+      if (from < p.from || to > p.to) throw new Error('range');
+      var out = {}; Object.keys(p.busy).forEach(function (id) { if (room === 'all' || id === room) out[id] = p.busy[id].filter(function (d) { return d >= from && d < to; }); });
+      return { ok: true, busy: out, at: p.at };
+    }).catch(function () { return get({ fn: 'avail', room: room, from: from, to: to }); });
+  }
   var ROOMS = null;
-  function rooms() { if (ROOMS) return Promise.resolve(ROOMS); return get({ fn: 'rooms' }).then(function (j) { ROOMS = j.rooms || []; return ROOMS; }); }
+  function rooms() {
+    if (ROOMS) return Promise.resolve(ROOMS);
+    return pub().then(function (p) { return p.rooms; }, function () { return get({ fn: 'rooms' }).then(function (j) { return j.rooms || []; }); })
+      .then(function (l) { ROOMS = l; return ROOMS; });
+  }
   function priceText(r) { var p = String(r.price || '').trim(); return !p || p === '문의' ? '요금 문의' : p; }
   function card(r, state, w) {
     var a = E('a', 'room'); a.href = 'room.html?id=' + encodeURIComponent(r.id) + (state && state.q ? '&' + state.q : '');
@@ -158,8 +194,8 @@
     $('#searchForm').onsubmit = function (ev) {
       ev.preventDefault();
       if (fIn.value && fOut.value && fOut.value > fIn.value) {
-        grid.innerHTML = '<div class="empty">빈 날짜를 확인하는 중… (10초 정도 걸릴 수 있어요)</div>';
-        get({ fn: 'avail', room: 'all', from: fIn.value, to: fOut.value }).then(function (j) { busy = j.busy || {}; draw(); }, function () { busy = null; draw(); });
+        grid.innerHTML = '<div class="empty">빈 날짜를 확인하는 중…</div>';
+        avail('all', fIn.value, fOut.value).then(function (j) { busy = j.busy || {}; draw(); }, function () { busy = null; draw(); });
       } else { busy = null; draw(); }
       var u = new URLSearchParams(); if (fArea.value) u.set('area', fArea.value); if (fIn.value) u.set('in', fIn.value); if (fOut.value) u.set('out', fOut.value); if (fPpl.value) u.set('ppl', fPpl.value); if (filt !== '전체') u.set('type', filt);
       history.replaceState(null, '', '?' + u.toString() + '#all');
@@ -218,7 +254,7 @@
     if (fIn.value) view = fIn.value.slice(0, 8) + '01';
     fIn.min = today(); fOut.min = add(today(), 1);
     calBox.innerHTML = '<div class="legend">빈 날짜를 불러오는 중…</div>';
-    get({ fn: 'avail', room: r.id, from: from, to: to }).then(function (j) { (j.busy[r.id] || []).forEach(function (d) { busy[d] = 1; }); paint(); sum(); }, function () { calBox.innerHTML = '<div class="legend">빈 날짜를 불러오지 못했습니다. 날짜를 적어 요청하시면 확인해 드립니다.</div>'; });
+    avail(r.id, from, to).then(function (j) { (j.busy[r.id] || []).forEach(function (d) { busy[d] = 1; }); paint(); sum(); }, function () { calBox.innerHTML = '<div class="legend">빈 날짜를 불러오지 못했습니다. 날짜를 적어 요청하시면 확인해 드립니다.</div>'; });
     function bad(a, b) { for (var d = a; d < b; d = add(d, 1)) if (busy[d]) return d; return ''; }
     function sum() {
       var mi = $('#m-info');
