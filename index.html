@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLEADER STAY · 관리가 다른 제주 숙소</title>
+<meta name="description" content="클리더가 직접 청소하고 관리하는 제주·청평 숙소. 단박부터 한달살이까지 빈 날짜를 보고 바로 예약 요청하세요. 문의 1668-2817">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+<header id="hd"></header>
+<section class="hero">
+  <div class="wrap">
+    <h1>관리가 다른 제주 숙소</h1>
+    <p>클리더가 직접 청소하고 관리하는 숙소만 모았습니다. 빈 날짜를 보고 바로 예약 요청하세요.</p>
+    <form class="search" id="searchForm" autocomplete="off">
+      <label>어디로<select id="f-area"><option value="">전체 지역</option></select></label>
+      <label>입실<input type="date" id="f-in"></label>
+      <label>퇴실<input type="date" id="f-out"></label>
+      <label>인원<select id="f-ppl"><option value="">인원</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option></select></label>
+      <button type="submit">검색</button>
+    </form>
+  </div>
+</section>
+<main>
+  <div class="wrap">
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <section class="sec soft">
+    <div class="wrap">
+      <h2>클리더 숙소는 이렇게 다릅니다</h2>
+      <p class="lead">숙소를 관리하는 회사가 직접 손님을 받습니다</p>
+      <div class="cards3">
+        <div class="box"><div class="ic">📸</div><h3>매번 사진으로 확인하는 청소</h3><p>매니저가 입실 전·퇴실 후 숙소 상태를 사진으로 남기고 침구·비품을 챙깁니다.</p></div>
+        <div class="box"><div class="ic">🗓️</div><h3>실시간 빈 날짜</h3><p>운영 장부와 바로 이어진 달력이라, 보이는 빈 날이 실제 빈 날입니다.</p></div>
+        <div class="box"><div class="ic">☎️</div><h3>대표번호 하나로 응대</h3><p>머무는 동안 불편한 점은 1668-2817로. 숙소를 아는 사람이 받습니다.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <div><h2 style="margin:0 0 4px">숙소를 갖고 계신가요?</h2><p>청소부터 예약·정산까지 클리더에 맡기세요. 숙소 주인 전용 화면으로 매일 확인합니다.</p></div>
+        <a class="btn w" href="host.html">숙소 맡기기 →</a>
+      </div>
+    </div>
+  </section>
+  <section class="sec soft">
+    <div class="wrap">
+      <h2>제주 가이드</h2>
+      <p class="lead">머무는 동안 알아 두면 좋은 이야기 · <a href="guide.html">전체 보기</a></p>
+      <div class="glist" id="guideTeaser"></div>
+    </div>
+  </section>
+</main>
+<footer id="ft"></footer>
+<script src="guide-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
