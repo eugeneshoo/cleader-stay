@@ -70,7 +70,7 @@
     }
     var ft = $('#ft'); if (ft) {
       ft.className = 'ft';
-      ft.innerHTML = '<div class="wrap"><div class="cols"><div><a class="logo" href="./">CLEADER STAY<small>STAY ALL CARE SERVICE</small></a><div>주식회사 클리더 · 숙소 청소 · 위탁운영 · 직접 예약<br>운영 지역 <span id="ftArea">제주 · 경기 · 강원</span><br>사업자 정보: (등록 예정)</div></div>' +
+      ft.innerHTML = '<div class="wrap"><div class="cols"><div><a class="logo" href="./">CLEADER STAY<small>STAY ALL CARE SERVICE</small></a><div>주식회사 클리더 · 숙소 청소 · 위탁운영 · 직접 예약<br>운영 지역 <span id="ftArea">제주 · 경기 · 강원</span></div><div class="biz">주식회사 클리더 · 대표 <img src="ceo.png" alt="대표자" width="40" height="18" loading="lazy"><br>사업자등록번호 630-86-02860<br>통신판매업 신고 2023-제주아라-0132호<br>제주시 번영로 474</div></div>' +
         '<div><h4>CONTACT</h4>대표번호 <a href="tel:' + TEL + '">' + TEL + '</a><br><a href="host.html#form">숙소 맡기기 상담</a><br>위탁 호스트님은 받으신 현황 링크로 접속해 주세요.</div>' +
         '<div><h4>INFO</h4><a href="guide.html">여행 가이드</a><br><a href="privacy.html">개인정보 처리 안내</a></div></div>' +
         '<div class="bot">© CLEADER. All rights reserved.</div></div>';
